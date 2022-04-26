@@ -1,0 +1,113 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.*;
+import java.lang.String;
+
+public class HraciePoleNove {
+    private Stvorec[][] pole;
+    private static final String[] FARBY = {"blue","black","yellow","green","magenta","orange","pink","gray"};
+    private int pocetOtocenych;
+    private Stvorec otocena1;
+    private Stvorec otocena2;
+    private String menoHraca;
+
+    public HraciePoleNove(int rozmer) {
+        this.pole = new Stvorec[rozmer][rozmer];
+        this.pocetOtocenych = 0;
+
+        for(int x=0; x<rozmer; x++) {
+            for(int y=0; y<rozmer; y++) {
+                String zadnaFarba = "red";
+                Stvorec karta = new Stvorec();
+                karta.posunVodorovne(75 * x);
+                karta.posunZvisle(75 * y);
+                karta.zmenStrany(70, 70);
+                karta.zmenFarbu(zadnaFarba);
+                karta.zobraz();
+                karta.setZadna(zadnaFarba);
+                pole[x][y] = karta;
+            }
+        }
+
+        this.zamiesaj();
+
+    }
+
+    public void vyhodnot(){
+         if ((otocena1.getPrednaStrana() == otocena2.getPrednaStrana()) == 0) {
+            otocena1.zobrazPredna();
+            otocena2.zobrazPredna();
+               //karty su rovnakej farby
+        } else {
+            otocena2.zobrazZadna();
+            otocena2.zobrazZadna();
+               //karty su roznej farby
+        }        
+         
+
+    }
+    
+    //pocita pocet tahov hraca
+    
+
+    private void zamiesaj() {
+        ArrayList<Stvorec> ar = new ArrayList<Stvorec>();
+        for(int i = 0; i < pole.length; i++) {
+            for(int j = 0; j < pole[i].length; j++) {
+                ar.add(pole[i][j]);               
+            }
+        }
+
+        Random rnd = new Random();
+        for(int i=0; i<FARBY.length; i++) {
+            String farba = FARBY[i];
+            int index = rnd.nextInt(ar.size());
+            Stvorec karta1 = ar.get(index);
+            karta1.setPredna(farba);
+            ar.remove(index);
+            index = rnd.nextInt(ar.size());
+            Stvorec karta2 = ar.get(index);
+            karta2.setPredna(farba);
+            ar.remove(index);
+
+        }
+    }
+
+    public void ukazRub(int x, int y) {
+        pole[x - 1][y - 1].zobrazPredna();
+        if(pocetOtocenych == 0) {
+            otocena1 = pole[x - 1][y - 1];
+        }
+        if(pocetOtocenych == 1) {
+            otocena2 = pole[x - 1][y - 1];
+        }
+        pocetOtocenych++;
+    }
+
+    public void ukazLice(int x, int y) {
+        pole[x - 1][y - 1].zobrazZadna();
+        pocetOtocenych--;
+    }
+
+    public void ukazVsetky() {
+        for(int i = 0; i < pole.length; i++) {
+            for(int j = 0; j < pole[i].length; j++) {
+                pole[i][j].zobrazPredna();               
+            }
+        }
+    }
+
+    public void skryVsetky() {
+        for(int i = 0; i < pole.length; i++) {
+            for(int j = 0; j < pole[i].length; j++) {
+                pole[i][j].zobrazZadna();               
+            }
+        }
+    }
+
+    public int getPocetOtocenych() {
+      return pocetOtocenych;
+    }
+}
+
