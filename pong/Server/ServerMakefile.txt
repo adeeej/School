@@ -1,0 +1,14 @@
+output: main.o Server.o StartMenu.o
+    g++ main.o Server.o StartMenu.o -o output
+
+main.o: main.cpp 
+    g++ -c main.cpp
+
+Server.o: Server.cpp Server.h
+    g++ -c Server.cpp
+
+StartMenu.o: StartMenu.cpp StartMenu.h
+    g++ -c StartMenu.cpp 
+
+clean:
+    rm *.o output

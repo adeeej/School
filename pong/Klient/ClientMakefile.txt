@@ -1,0 +1,14 @@
+output: main.o Client.o ClientMenu.o
+    g++ main.o Client.o ClientMenu.o -o output
+
+main.o: main.cpp 
+    g++ -c main.cpp
+
+Client.o: Client.cpp Client.h
+    g++ -c Client.cpp
+
+ClientMenu.o: ClientMenu.cpp ClientMenu.h
+    g++ -c ClientMenu.cpp 
+
+clean:
+    rm *.o output
